@@ -65,5 +65,29 @@
         <div class="result" id="result"></div>
     </div>
 </body>
+<script>
+    document.getElementById('convert').addEventListener('click', () => {
+        const type = document.getElementById('conversion-type').value;
+        const value = parseFloat(document.getElementById('input-value').value);
+        let result;
+
+        switch (type) {
+            case 'temperature':
+                result = (value * 9/5) + 32;
+                document.getElementById('result').innerText = `${value} °C = ${result.toFixed(2)} °F`;
+                break;
+            case 'length':
+                result = value * 3.28084;
+                document.getElementById('result').innerText = `${value} meters = ${result.toFixed(2)} feet`;
+                break;
+            case 'weight':
+                result = value * 2.20462;
+                document.getElementById('result').innerText = `${value} kilograms = ${result.toFixed(2)} pounds`;
+                break;
+            default:
+                document.getElementById('result').innerText = 'Please select a conversion type';
+        }
+    });
+</script>
 </html>
 

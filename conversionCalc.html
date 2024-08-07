@@ -50,6 +50,16 @@
             font-size: 18px;
             margin-top: 20px;
         }
+
+        .history {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .history p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -63,31 +73,54 @@
         <input type="number" id="input-value" placeholder="Enter value">
         <button id="convert">Convert</button>
         <div class="result" id="result"></div>
+        <div class="history" id="history">
+            <h2>Conversion History</h2>
+        </div>
     </div>
-</body>
-<script>
-    document.getElementById('convert').addEventListener('click', () => {
-        const type = document.getElementById('conversion-type').value;
-        const value = parseFloat(document.getElementById('input-value').value);
-        let result;
+    <script>
+        let history = [];
 
-        switch (type) {
-            case 'temperature':
-                result = (value * 9/5) + 32;
-                document.getElementById('result').innerText = `${value} °C = ${result.toFixed(2)} °F`;
-                break;
-            case 'length':
-                result = value * 3.28084;
-                document.getElementById('result').innerText = `${value} meters = ${result.toFixed(2)} feet`;
-                break;
-            case 'weight':
-                result = value * 2.20462;
-                document.getElementById('result').innerText = `${value} kilograms = ${result.toFixed(2)} pounds`;
-                break;
-            default:
-                document.getElementById('result').innerText = 'Please select a conversion type';
+        document.getElementById('convert').addEventListener('click', () => {
+            const type = document.getElementById('conversion-type').value;
+            const value = parseFloat(document.getElementById('input-value').value);
+            let result;
+            let resultText;
+
+            switch (type) {
+                case 'temperature':
+                    result = (value * 9/5) + 32;
+                    resultText = `${value} °C = ${result.toFixed(2)} °F`;
+                    break;
+                case 'length':
+                    result = value * 3.28084;
+                    resultText = `${value} meters = ${result.toFixed(2)} feet`;
+                    break;
+                case 'weight':
+                    result = value * 2.20462;
+                    resultText = `${value} kilograms = ${result.toFixed(2)} pounds`;
+                    break;
+                default:
+                    resultText = 'Please select a conversion type';
+            }
+
+            document.getElementById('result').innerText = resultText;
+
+            if (resultText !== 'Please select a conversion type') {
+                history.unshift(resultText);
+                if (history.length > 5) history.pop(); // Keep only the last 5 results
+                updateHistory();
+            }
+        });
+
+        function updateHistory() {
+            const historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = '<h2>Conversion History</h2>'; // Reset history header
+            history.forEach(entry => {
+                const p = document.createElement('p');
+                p.innerText = entry;
+                historyDiv.appendChild(p);
+            });
         }
-    });
-</script>
+    </script>
+</body>
 </html>
-
